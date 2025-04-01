@@ -1,0 +1,181 @@
+Aula: Consumo de API no Front-End com JavaScript
+
+🎯 Objetivo: Ensinar os alunos a consumir APIs usando fetch() e exibir os dados no HTML.
+
+1. Introdução ao Conceito de API (15 min)
+O que é uma API?
+API (Application Programming Interface) permite que sistemas se comuniquem.
+
+APIs retornam dados geralmente no formato JSON.
+
+💡 Exemplo: Quando você acessa um site de previsão do tempo, ele obtém os dados de uma API meteorológica.
+
+O que é fetch()?
+fetch() permite buscar dados de uma API.
+
+Ele retorna uma Promise, que precisa ser tratada com .then() ou async/await.
+
+-----------------------------------------------------------------------------------------------
+
+2. Primeiros Passos com fetch() (30 min)
+Exemplo: Buscando dados de usuários
+
+🔹 Usando .then()
+js
+Copiar
+Editar
+fetch('https://jsonplaceholder.typicode.com/users')
+  .then(response => response.json()) // Converte a resposta para JSON
+  .then(data => console.log(data)) // Exibe os dados no console
+  .catch(error => console.error('Erro ao buscar os dados:', error));
+
+🔹 Usando async/await
+async function carregarUsuarios() {
+    try {
+        let response = await fetch('https://jsonplaceholder.typicode.com/users');
+        let data = await response.json();
+        console.log(data);
+    } catch (error) {
+        console.error('Erro ao buscar os dados:', error);
+    }
+}
+carregarUsuarios();
+📝 Atividade 1: Peça para os alunos rodarem ambos os códigos e explicarem a saída no console.
+
+-----------------------------------------------------------------------------------------------
+
+3. Exibindo os Dados no HTML (30 min)
+
+Passo 1: Criando a estrutura no HTML
+<h1>Lista de Usuários</h1>
+<button onclick="carregarUsuarios()">Carregar Usuários</button>
+<ul id="listaUsuarios"></ul>
+
+Passo 2: Código JavaScript
+async function carregarUsuarios() {
+    try {
+        let response = await fetch('https://jsonplaceholder.typicode.com/users');
+        let data = await response.json();
+        
+        let lista = document.getElementById("listaUsuarios");
+        lista.innerHTML = ""; // Limpa a lista antes de adicionar novos itens
+        
+        data.forEach(usuario => {
+            let item = document.createElement("li");
+            item.textContent = usuario.name;
+            lista.appendChild(item);
+        });
+    } catch (error) {
+        console.error("Erro ao carregar os usuários:", error);
+    }
+}
+
+📝 Atividade 2: Peça aos alunos para modificar o código e exibir também o email dos usuários.
+
+-----------------------------------------------------------------------------------------------
+
+
+4. Criando uma Tabela com Dados da API (30 min)
+Agora vamos melhorar a exibição dos dados criando uma tabela dinâmica.
+
+<h1>Lista de Usuários</h1>
+<button onclick="carregarUsuarios()">Carregar Usuários</button>
+<table border="1">
+    <thead>
+        <tr>
+            <th>Nome</th>
+            <th>Email</th>
+            <th>Empresa</th>
+        </tr>
+    </thead>
+    <tbody id="corpoTabela"></tbody>
+</table>
+
+Passo 2: JavaScript
+async function carregarUsuarios() {
+    try {
+        let response = await fetch('https://jsonplaceholder.typicode.com/users');
+        let data = await response.json();
+        
+        let corpoTabela = document.getElementById("corpoTabela");
+        corpoTabela.innerHTML = ""; // Limpa antes de adicionar os novos dados
+        
+        data.forEach(usuario => {
+            let linha = document.createElement("tr");
+            linha.innerHTML = `
+                <td>${usuario.name}</td>
+                <td>${usuario.email}</td>
+                <td>${usuario.company.name}</td>
+            `;
+            corpoTabela.appendChild(linha);
+        });
+    } catch (error) {
+        console.error("Erro ao carregar os usuários:", error);
+    }
+}
+
+📝 Atividade 3: Peça para os alunos adicionar uma coluna com o telefone dos usuários.
+
+-----------------------------------------------------------------------------------------------
+
+5. Desafio Final: Criando um Catálogo de Produtos (45 min)
+Agora os alunos vão trabalhar sozinhos para consumir uma API diferente e exibir os produtos em cards.
+
+Objetivo:
+Consumir a API de produtos FakeStore e exibir os produtos no HTML.
+
+Passo 1: API a ser usada
+📌 URL da API: https://fakestoreapi.com/products
+
+Passo 2: Criando a Estrutura HTML
+<h1>Catálogo de Produtos</h1>
+<button onclick="carregarProdutos()">Carregar Produtos</button>
+<div id="produtos" style="display: flex; flex-wrap: wrap; gap: 20px;"></div>
+Passo 3: Criando os Cards com JS
+async function carregarProdutos() {
+    try {
+        let response = await fetch('https://fakestoreapi.com/products');
+        let produtos = await response.json();
+        
+        let container = document.getElementById("produtos");
+        container.innerHTML = ""; // Limpa os produtos anteriores
+        
+        produtos.forEach(produto => {
+            let card = document.createElement("div");
+            card.style.border = "1px solid #ccc";
+            card.style.padding = "10px";
+            card.style.width = "200px";
+            card.style.textAlign = "center";
+            
+            card.innerHTML = `
+                <img src="${produto.image}" width="100" height="100">
+                <h3>${produto.title}</h3>
+                <p>Preço: R$ ${produto.price}</p>
+                <button>Comprar</button>
+            `;
+            container.appendChild(card);
+        });
+    } catch (error) {
+        console.error("Erro ao carregar os produtos:", error);
+    }
+}
+📝 Desafio:
+
+Exibir a descrição do produto ao passar o mouse sobre ele.
+
+Criar um filtro para exibir apenas produtos de uma categoria específica.
+
+6. Conclusão e Revisão
+🎯 O que aprendemos hoje?
+✅ O que é uma API e como consumir dados com fetch().
+✅ Como exibir os dados no HTML em listas e tabelas.
+✅ Como criar uma interface dinâmica com JavaScript.
+✅ Como manipular APIs diferentes para exibir informações variadas.
+
+💡 Perguntas para fixação:
+
+O que é uma API e por que usamos fetch() para consumi-la?
+
+Qual a diferença entre .then() e async/await?
+
+Como adicionar dinamicamente elementos ao HTML com JavaScript?
