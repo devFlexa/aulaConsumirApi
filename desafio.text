@@ -1,0 +1,89 @@
+Desafio: Listar Usuários na Tela
+📌 Utilize a API pública https://jsonplaceholder.typicode.com/users para buscar uma lista de usuários e exibi-los em uma tabela HTML.
+
+O que o aluno precisa fazer?
+Criar um botão "Carregar Usuários".
+
+Ao clicar no botão, buscar os usuários da API usando fetch().
+
+Exibir os dados em uma tabela (<table>) com as colunas Nome, E-mail e Empresa.
+
+Código base para começar
+Os alunos podem começar com este código HTML:
+
+html
+Copiar
+Editar
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Usuários</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Lista de Usuários</h1>
+    <button onclick="carregarUsuarios()">Carregar Usuários</button>
+
+    <table id="tabelaUsuarios">
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>E-mail</th>
+                <th>Empresa</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Os dados serão inseridos aqui -->
+        </tbody>
+    </table>
+
+    <script>
+        function carregarUsuarios() {
+            fetch('https://jsonplaceholder.typicode.com/users')
+                .then(response => response.json())
+                .then(usuarios => {
+                    const tabela = document.querySelector("#tabelaUsuarios tbody");
+                    tabela.innerHTML = ""; // Limpa os dados antes de carregar novos
+                    
+                    usuarios.forEach(usuario => {
+                        let linha = `<tr>
+                            <td>${usuario.name}</td>
+                            <td>${usuario.email}</td>
+                            <td>${usuario.company.name}</td>
+                        </tr>`;
+                        tabela.innerHTML += linha;
+                    });
+                })
+                .catch(error => console.error("Erro ao carregar os usuários:", error));
+        }
+    </script>
+
+</body>
+</html>
+Dicas para os alunos
+💡 Dica 1: O botão chama a função carregarUsuarios(), que faz a requisição para a API.
+💡 Dica 2: fetch() retorna uma promessa, por isso usamos .then(response => response.json()).
+💡 Dica 3: usuarios.forEach() percorre a lista de usuários e adiciona uma nova linha <tr> para cada um.
+💡 Dica 4: tabela.innerHTML = "" limpa a tabela antes de adicionar novos dados.
+
+Desafios Extras para os Alunos
+🔥 1. Adicionar uma coluna "Telefone"
+🔥 2. Criar um campo de pesquisa para filtrar os usuários pelo nome
+🔥 3. Exibir um alerta caso a API não retorne nenhum usuário
